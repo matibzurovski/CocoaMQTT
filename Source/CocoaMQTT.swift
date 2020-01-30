@@ -117,7 +117,7 @@ protocol CocoaMQTTClient {
     var willMessage: CocoaMQTTWill? {get set}
 
     func connect() -> Bool
-    func connect(timeout:TimeInterval) -> Bool
+    func connect(timeout: TimeInterval, readerTimeout: Int) -> Bool
     func disconnect()
     func ping()
     
@@ -355,9 +355,9 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient, CocoaMQTTDeliverProtocol {
     }
     
     /// Connect to MQTT broker
-    public func connect(timeout: TimeInterval) -> Bool {
+    public func connect(timeout: TimeInterval, readerTimeout: Int) -> Bool {
         socket.setDelegate(self, delegateQueue: dispatchQueue)
-        reader = CocoaMQTTReader(socket: socket, delegate: self)
+        reader = CocoaMQTTReader(socket: socket, delegate: self, timeout: readerTimeout)
         do {
             if timeout > 0 {
                 try socket.connect(toHost: self.host, onPort: self.port, withTimeout: timeout)
@@ -672,11 +672,12 @@ class CocoaMQTTReader {
     private var data: [UInt8] = []
     private var multiply = 1
     private weak var delegate: CocoaMQTTReaderDelegate?
-    private var timeout = 30000
+    private var timeout: Int
 
-    init(socket: GCDAsyncSocket, delegate: CocoaMQTTReaderDelegate?) {
+    init(socket: GCDAsyncSocket, delegate: CocoaMQTTReaderDelegate?, timeout: Int) {
         self.socket = socket
         self.delegate = delegate
+        self.timeout = timeout
     }
 
     func start() {
