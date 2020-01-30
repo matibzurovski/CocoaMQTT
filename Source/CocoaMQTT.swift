@@ -114,7 +114,7 @@ protocol CocoaMQTTClient {
     /* CONNNEC/DISCONNECT */
     
     func connect() -> Bool
-    func connect(timeout:TimeInterval) -> Bool
+    func connect(timeout: TimeInterval, readerTimeout: Int) -> Bool
     func disconnect()
     func ping()
     
