@@ -43,7 +43,7 @@ class CocoaMQTTReader {
     
     private weak var delegate: CocoaMQTTReaderDelegate?
     
-    private var timeout = 2000
+    private var timeout: Int
     
     /*  -- Reader states -- */
     private var header: UInt8 = 0
@@ -52,9 +52,10 @@ class CocoaMQTTReader {
     private var multiply = 1
     /*  -- Reader states -- */
     
-    init(socket: CocoaMQTTSocketProtocol, delegate: CocoaMQTTReaderDelegate?) {
+    init(socket: CocoaMQTTSocketProtocol, delegate: CocoaMQTTReaderDelegate?, timeout: Int = 2000) {
         self.socket = socket
         self.delegate = delegate
+        self.timeout = timeout
     }
     
     func start() {

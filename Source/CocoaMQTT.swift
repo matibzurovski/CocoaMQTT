@@ -356,7 +356,7 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient {
     ///   - Bool: It indicates whether successfully calling socket connect function.
     ///           Not yet established correct MQTT session
     public func connect() -> Bool {
-        return connect(timeout: -1)
+        return connect(timeout: -1, readerTimeout: 2000)
     }
     
     /// Connect to MQTT broker
@@ -365,9 +365,9 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient {
     /// - Returns:
     ///   - Bool: It indicates whether successfully calling socket connect function.
     ///           Not yet established correct MQTT session
-    public func connect(timeout: TimeInterval) -> Bool {
+    public func connect(timeout: TimeInterval, readerTimeout: Int) -> Bool {
         socket.setDelegate(self, delegateQueue: delegateQueue)
-        reader = CocoaMQTTReader(socket: socket, delegate: self)
+        reader = CocoaMQTTReader(socket: socket, delegate: self, timeout: readerTimeout)
         do {
             if timeout > 0 {
                 try socket.connect(toHost: self.host, onPort: self.port, withTimeout: timeout)
