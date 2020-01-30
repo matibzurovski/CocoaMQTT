@@ -43,7 +43,7 @@ class CocoaMQTTReader {
     
     private weak var delegate: CocoaMQTTReaderDelegate?
     
-    private var timeout = 30000
+    private var timeout = 2000
     
     /*  -- Reader states -- */
     private var header: UInt8 = 0
