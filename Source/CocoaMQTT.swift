@@ -351,7 +351,7 @@ public class CocoaMQTT: NSObject, CocoaMQTTClient, CocoaMQTTDeliverProtocol {
 
     /// Connect to MQTT broker
     public func connect() -> Bool {
-        return connect(timeout: -1)
+        return connect(timeout: -1, readerTimeout: 1000)
     }
     
     /// Connect to MQTT broker
